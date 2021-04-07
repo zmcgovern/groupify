@@ -1,4 +1,4 @@
-# Login Example
+# Groupify Instructions
 
 If you want to run the project, you must follow these steps:
 1. Download files
