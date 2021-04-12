@@ -47,6 +47,9 @@ passport.deserializeUser(function (obj, done) {
 //   and spotify profile), and invoke a callback with a user object.
 
 //Stores necessary information in database
+var top_pick = [];
+var discord = [];
+var description = [];
 passport.use(
   new SpotifyStrategy(
     {
@@ -80,6 +83,11 @@ passport.use(
             var house_genre=0;
             var edm_genre=0;
             var rap_genre=0;
+            var rb_genre=0;
+            var hh_genre=0;
+            var country_genre=0;
+            var indie_genre=0;
+            var unique_genre=1;
 
             for (j = 0; j < genres_array.length; j++) {
                 if (genres_array[j].includes('pop')) {
@@ -97,9 +105,21 @@ passport.use(
                 if (genres_array[j].includes('rap')) {
                     rap_genre+=1;
                 }
+                if (genres_array[j].includes('r&b')) {
+                  rb_genre+=1;
+                }
+                if (genres_array[j].includes('hip hop')) {
+                  hh_genre+=1;
+                }
+                if (genres_array[j].includes('country')) {
+                  country_genre+=1;
+                }
+                if (genres_array[j].includes('indie')) {
+                  indie_genre+=1;
+                }
             }  
             var obj = {
-              pop: pop_genre, rock: rock_genre, house: house_genre, edm:edm_genre, rap:rap_genre
+              pop: pop_genre, rock: rock_genre, house: house_genre, edm:edm_genre, rap:rap_genre, rb:rb_genre, hh:hh_genre, country:country_genre, indie:indie_genre, unique:unique_genre 
           };
             function findMax(obj) {
               var keys = Object.keys(obj);
@@ -113,11 +133,48 @@ passport.use(
               return max;
           }
           
-          var top_genre = findMax(obj)
+          var top_genre = findMax(obj);
         con.query("REPLACE INTO user (user_id, username, email, accessToken, refreshToken, top_genre) VALUES ('"+profile.id+"', '"+profile.displayName+"', '"+profile.emails[0].value+"', '"+accessToken+"', '"+refreshToken+"', '"+top_genre+"')", function (err, result) {
             if (err) throw err;
             console.log("1 record inserted");
         });
+        con.query("SELECT genres.genre_name FROM genres LEFT JOIN user ON user.top_genre = genres.top_genre WHERE genres.top_genre = '"+top_genre+"'", function (err, result) {
+          if (err) throw err;
+          console.log('>> results: ', result );
+          var string=JSON.stringify(result);
+          console.log('>> string: ', string );
+          var json =  JSON.parse(string);
+          console.log('>> json: ', json);
+          var result_genre =  json[0].genre_name;
+          console.log('>> genre: ', result_genre);
+          console.log('>> type ', typeof result_genre);
+          top_pick.push(result_genre);
+          console.log('>> variable ',top_pick);
+      });
+      con.query("SELECT genres.discord_link FROM genres LEFT JOIN user ON user.top_genre = genres.top_genre WHERE genres.top_genre = '"+top_genre+"'", function (err, result) {
+        if (err) throw err;
+        console.log('>> results: ', result );
+        var string=JSON.stringify(result);
+        console.log('>> string: ', string );
+        var json =  JSON.parse(string);
+        console.log('>> json: ', json);
+        var result_link =  json[0].discord_link;
+        console.log('>> genre: ', result_link);
+        discord.push(result_link);
+        console.log('>> variable ',discord);
+    });
+    con.query("SELECT genres.genre_description FROM genres LEFT JOIN user ON user.top_genre = genres.top_genre WHERE genres.top_genre = '"+top_genre+"'", function (err, result) {
+      if (err) throw err;
+      console.log('>> results: ', result );
+      var string=JSON.stringify(result);
+      console.log('>> string: ', string );
+      var json =  JSON.parse(string);
+      console.log('>> json: ', json);
+      var result_description =  json[0].genre_description;
+      console.log('>> genre: ', result_description);
+      description.push(result_description);
+      console.log('>> variable ',description);
+  });
 
         return done(null, profile);
       });
@@ -148,9 +205,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/group', ensureAuthenticated, function (req, res) {
-  res.render('group.html', {user: req.user, top_pick: con.query("SELECT top_genre FROM user WHERE username='"+req.user.username+"'", function (err, result) {
-    if (err){throw err;}
-    return result})}
+  res.render('group.html', {user: req.user, most_listened: top_pick[0], best_description: description[0], chosen_link: discord[0]}
     );
 });
 
@@ -184,6 +239,7 @@ app.get('/logout', function (req, res) {
   req.logout();
   res.redirect('/');
 });
+
 
 app.listen(port, function () {
   console.log('App is listening on port ' + port);

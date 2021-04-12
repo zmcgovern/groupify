@@ -9,7 +9,7 @@
     <title>Groups</title>
     <link rel="stylesheet" href="css/nicepage.css" media="screen">
     <link rel="stylesheet" href="css/Groups.css" media="screen">
-    <script class="u-script" type="text/javascript" src="jquery.js" defer=""></script>
+    <script class="u-script" type="text/javascript" src="views/jquery.js" defer=""></script>
     <script class="u-script" type="text/javascript" src="nicepage.js" defer=""></script>
     <meta name="generator" content="Nicepage 3.11.0, nicepage.com">
     <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i">
@@ -75,20 +75,18 @@
               </div>
               <div class="u-align-center-sm u-align-center-xs u-container-style u-layout-cell u-right-cell u-size-45 u-layout-cell-2">
                 <div class="u-container-layout u-container-layout-2">
-                  <h3 class="u-text u-text-body-alt-color u-text-1">We have identified EDM as your compatible genre!&nbsp;<br>
+                  <h3 class="u-text u-text-body-alt-color u-text-1">We have identified {{ most_listened }} as your compatible genre!&nbsp;<br>
                     <br>
-                    <span style="font-size: 1.875rem;">You like songs that have a
-broad range of percussive electronic&nbsp;music genres&nbsp;made largely for
-nightclubs, raves, and festivals.</span>
+                    <span style="font-size: 1.875rem;">{{best_description}}</span>
                   </h3>
-                  <a href="https://discord.gg/6VB78AuhTU" class="u-btn u-button-style u-custom-font u-font-roboto u-text-custom-color-1 u-white u-btn-1">Visit <b>EDM</b> Discord Group
+                  <a href= {{chosen_link}} class="u-btn u-button-style u-custom-font u-font-roboto u-text-custom-color-1 u-white u-btn-1">Visit <b>{{ most_listened }}</b> Discord Group
                   </a>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <h1 class="u-text u-text-body-alt-color u-title u-text-2">EDM</h1>
+        <h1 class="u-text u-text-body-alt-color u-title u-text-2">{{ most_listened.toUpperCase() }}</h1>
         <img src="images/Groupifylogo.png" alt="" class="u-image u-image-default u-preserve-proportions u-image-1" data-image-width="512" data-image-height="512">
       </div>
     </section>
