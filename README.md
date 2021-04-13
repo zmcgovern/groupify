@@ -44,4 +44,4 @@ If you want to run the project, you must follow these steps:
    npm install mysql
    npm install passport-spotify 
    ```
-1. Navigate to `http://localhost:8888/`.
+1. Navigate to `http://localhost:8810/`.
