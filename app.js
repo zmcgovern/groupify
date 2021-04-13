@@ -206,7 +206,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/group', ensureAuthenticated, function (req, res) {
-  res.render('group.html', {user: req.user, most_listened: top_pick[0], best_description: description[0], chosen_link: discord[0]}
+  res.render('group.html', {user: req.user, most_listened: top_pick[-1], best_description: description[-1], chosen_link: discord[-1]}
     );
 });
 
