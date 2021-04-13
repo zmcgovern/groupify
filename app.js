@@ -148,6 +148,7 @@ passport.use(
           var result_genre =  json[0].genre_name;
           console.log('>> genre: ', result_genre);
           console.log('>> type ', typeof result_genre);
+          top_pick.length = 0;
           top_pick.push(result_genre);
           console.log('>> variable ',top_pick);
       });
@@ -160,6 +161,7 @@ passport.use(
         console.log('>> json: ', json);
         var result_link =  json[0].discord_link;
         console.log('>> genre: ', result_link);
+        discord.length = 0;
         discord.push(result_link);
         console.log('>> variable ',discord);
     });
@@ -172,6 +174,7 @@ passport.use(
       console.log('>> json: ', json);
       var result_description =  json[0].genre_description;
       console.log('>> genre: ', result_description);
+      description.length = 0;
       description.push(result_description);
       console.log('>> variable ',description);
   });
@@ -206,7 +209,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/group', ensureAuthenticated, function (req, res) {
-  res.render('group.html', {user: req.user, most_listened: top_pick[-1], best_description: description[-1], chosen_link: discord[-1]}
+  res.render('group.html', {user: req.user, most_listened: top_pick[0], best_description: description[0], chosen_link: discord[0]}
     );
 });
 
