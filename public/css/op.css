@@ -1,10 +1,9 @@
 body{
-    position:absolute;
-    width:100%;
-    height:100%;
-    margin:0;
-    padding:0;
-    background-image:url(http://www.matthewlewicki.com/codefest/images/spotify-background.jpg);}
+    width:100%;  
+    background-position: 50% 50%;
+    background-size:100%;
+    background-image: url("../images/37665854-0.jpeg");
+    }
   h1{
     margin:0 0 .5em 0;
     padding:0;
@@ -14,7 +13,7 @@ body{
     font-weight:100;
     letter-spacing:1px;
     text-align:center;
-      text-shadow: 0 1px 2px rgba(0,0,0,1);}
+    text-shadow: 0 1px 2px rgba(0,0,0,1);}
   section{
     position:relative;
     top:50%;

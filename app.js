@@ -20,7 +20,7 @@ con.connect(function(err) {
   console.log("Connected!");
 });
 
-var port = 8888;
+var port = 8810;
 var authCallbackPath = '/auth/spotify/callback';
 
 
@@ -197,6 +197,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(express.static(__dirname + '/public'));
+app.use(express.static('public'));
 
 app.engine('html', consolidate.nunjucks);
 
@@ -206,6 +207,11 @@ app.get('/', function (req, res) {
 
 app.get('/group', ensureAuthenticated, function (req, res) {
   res.render('group.html', {user: req.user, most_listened: top_pick[0], best_description: description[0], chosen_link: discord[0]}
+    );
+});
+
+app.get('/aboutus', ensureAuthenticated, function (req, res) {
+  res.render('About-Us.html', {user: req.user}
     );
 });
 
