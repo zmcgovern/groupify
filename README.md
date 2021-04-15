@@ -44,4 +44,7 @@ If you want to run the project, you must follow these steps:
    npm install mysql
    npm install passport-spotify 
    ```
+
+1. Install SQL file and import into local mysql database. Check top of app.js file to make sure database info is the same. 
+
 1. Navigate to `http://localhost:8810/`.
