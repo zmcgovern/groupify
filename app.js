@@ -51,6 +51,7 @@ var top_pick = [];
 var discord = [];
 var description = [];
 var top_artists = [];
+var top_artists_txt = '';
 passport.use(
   new SpotifyStrategy(
     {
@@ -63,7 +64,7 @@ passport.use(
       process.nextTick(function () {
         console.log('Profile: ', profile)
         var options = {
-          url: 'https://api.spotify.com/v1/me/top/artists?time_range=long_term&limit=10',
+          url: 'https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=10',
           headers: {
             'Authorization': 'Bearer ' + accessToken
           },
@@ -81,6 +82,19 @@ passport.use(
             var z;
             for (z = 0; z < listening_data.items.length; z++) {
               top_artists.push(listening_data.items[z].name);
+            } 
+
+            var y;
+            for (y = 0; y < top_artists.length; y++) {
+              if (y==0) {
+                top_artists_txt += top_artists[y];
+              }
+              else if (top_artists[y]==top_artists[-1]) {
+                top_artists_txt += ", and " + top_artists[y];
+              }
+              else {
+              top_artists_txt += ", " + top_artists[y];
+              }
             } 
 
             var j;
@@ -210,8 +224,19 @@ app.use(express.static('public'));
 app.engine('html', consolidate.nunjucks);
 
 app.get('/', function (req, res) {
-  res.render('index.html', {user: req.user});
+  res.render('index.html', {user: req.user, artists: top_artists_txt});
 });
+
+// function findtxt(list) {
+//   var y;
+//   var top_txt = '';
+//   for (y = 0; y < list.length; y++) {
+//     top_txt += "<br>" + list[y];
+//     console.log(top_artists_txt);
+//   } 
+//   console.log('>function',top_txt)
+//   return top_txt
+// }
 
 
 app.get('/group', ensureAuthenticated, function (req, res) {
