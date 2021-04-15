@@ -50,6 +50,7 @@ passport.deserializeUser(function (obj, done) {
 var top_pick = [];
 var discord = [];
 var description = [];
+var top_artists = [];
 passport.use(
   new SpotifyStrategy(
     {
@@ -76,6 +77,11 @@ passport.use(
             for (i = 0; i < listening_data.items.length; i++) {
               listening_data.items[i].genres.forEach(a => genres_array.push(a));
             }      
+            
+            var z;
+            for (z = 0; z < listening_data.items.length; z++) {
+              top_artists.push(listening_data.items[z].name);
+            } 
 
             var j;
             var pop_genre=0;
@@ -134,7 +140,7 @@ passport.use(
           }
           
           var top_genre = findMax(obj);
-        con.query("REPLACE INTO user (user_id, username, email, accessToken, refreshToken, top_genre) VALUES ('"+profile.id+"', '"+profile.displayName+"', '"+profile.emails[0].value+"', '"+accessToken+"', '"+refreshToken+"', '"+top_genre+"')", function (err, result) {
+        con.query("REPLACE INTO user (user_id, username, email, accessToken, refreshToken, top_genre, top_artists) VALUES ('"+profile.id+"', '"+profile.displayName+"', '"+profile.emails[0].value+"', '"+accessToken+"', '"+refreshToken+"', '"+top_genre+"', '"+JSON.stringify(top_artists)+"')", function (err, result) {
             if (err) throw err;
             console.log("1 record inserted");
         });
@@ -178,7 +184,6 @@ passport.use(
       description.push(result_description);
       console.log('>> variable ',description);
   });
-
         return done(null, profile);
       });
     });
@@ -207,6 +212,7 @@ app.engine('html', consolidate.nunjucks);
 app.get('/', function (req, res) {
   res.render('index.html', {user: req.user});
 });
+
 
 app.get('/group', ensureAuthenticated, function (req, res) {
   res.render('group.html', {user: req.user, most_listened: top_pick[0], best_description: description[0], chosen_link: discord[0]}
