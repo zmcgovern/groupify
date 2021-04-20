@@ -80,11 +80,13 @@ passport.use(
             }      
             
             var z;
+            top_artists.length = 0;
             for (z = 0; z < listening_data.items.length; z++) {
               top_artists.push(listening_data.items[z].name);
             } 
 
             var y;
+            top_artists_txt = '';
             for (y = 0; y < top_artists.length; y++) {
               if (y==0) {
                 top_artists_txt += top_artists[y];
@@ -241,6 +243,11 @@ app.get('/', function (req, res) {
 
 app.get('/group', ensureAuthenticated, function (req, res) {
   res.render('group.html', {user: req.user, most_listened: top_pick[0], best_description: description[0], chosen_link: discord[0]}
+    );
+});
+
+app.get('/contact', ensureAuthenticated, function (req, res) {
+  res.render('Contact-Us.html', {user: req.user, most_listened: top_pick[0], best_description: description[0], chosen_link: discord[0]}
     );
 });
 
